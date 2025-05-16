@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>מדריך פקודות בסיסי למנהל רשת Windows - Win+R ו-CMD</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f7f9;
+    margin: 0;
+    padding: 20px;
+    color: #222;
+  }
+  h1 {
+    text-align: center;
+    color: #2c3e50;
+  }
+  #search-container {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+  }
+  #search {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 18px;
+    border: 2px solid #2980b9;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  #commands {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+    padding: 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    direction: rtl;
+  }
+  th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: top;
+  }
+  th {
+    background-color: #2980b9;
+    color: white;
+    text-align: right;
+  }
+  tr:hover {
+    background-color: #ecf0f1;
+  }
+  .cmd {
+    font-weight: 700;
+    color: #34495e;
+    font-family: "Courier New", Courier, monospace;
+  }
+  .desc {
+    color: #555;
+  }
+  @media (max-width: 600px) {
+    th, td {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: right;
+    }
+    tr {
+      margin-bottom: 15px;
+      border-bottom: 2px solid #2980b9;
+      display: block;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>מדריך פקודות למנהל רשת Windows - Win+R ו-CMD</h1>
+
+<div id="search-container">
+  <input type="text" id="search" placeholder="חפש נושא פקודה הסבר או מילת מפתח.." autofocus />
+</div>
+
+<div id="commands">
+  <table id="cmdTable" dir="rtl" lang="he">
+    <thead>
+      <tr>
+        <th>פקודה/קיצור דרך</th>
+        <th>הפעולה</th>
+      </tr>
+    </thead>
+    <tbody id="cmdBody">
+      <!-- שורות יתווספו ע"י JavaScript -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const commands = [
+    // פקודות Win+R
+    { cmd: 'cmd', desc: 'שורת הפקודה (Command Prompt)' },
+    { cmd: 'powershell', desc: 'PowerShell' },
+    { cmd: 'notepad', desc: 'פנקס רשימות' },
+    { cmd: 'calc', desc: 'מחשבון' },
+    { cmd: 'control', desc: 'לוח הבקרה' },
+    { cmd: 'regedit', desc: 'עורך הרגיסטרי (⚠️ בזהירות!)' },
+    { cmd: 'msconfig', desc: 'תצורת מערכת (System Configuration)' },
+    { cmd: 'services.msc', desc: 'ניהול שירותים' },
+    { cmd: 'taskmgr', desc: 'מנהל המשימות' },
+    { cmd: 'devmgmt.msc', desc: 'מנהל ההתקנים' },
+    { cmd: 'diskmgmt.msc', desc: 'ניהול דיסקים' },
+    { cmd: 'eventvwr', desc: 'יומני מערכת' },
+    { cmd: 'gpedit.msc', desc: 'עורך מדיניות קבוצתית (בגרסאות Pro בלבד)' },
+    { cmd: 'secpol.msc', desc: 'הגדרות אבטחה מקומית' },
+    { cmd: 'compmgmt.msc', desc: 'ניהול המחשב' },
+    { cmd: 'netplwiz', desc: 'ניהול חשבונות משתמשים' },
+    { cmd: 'mspaint', desc: 'צייר' },
+    { cmd: 'snippingtool', desc: 'כלי צילום מסך ישן' },
+    { cmd: 'snip', desc: 'כלי צילום מסך חדש' },
+    { cmd: 'dxdiag', desc: 'מידע על מערכת וגרפיקה' },
+    { cmd: 'msinfo32', desc: 'מידע מלא על המערכת' },
+    { cmd: 'powershell_ise', desc: 'עורך סקריפטים של PowerShell' },
+    { cmd: 'control printers', desc: 'ניהול מדפסות' },
+
+    // פקודות CMD נפוצות
+    { cmd: 'dir', desc: 'מציג קבצים ותיקיות בתיקייה' },
+    { cmd: 'cd', desc: 'שינוי תיקייה' },
+    { cmd: 'copy', desc: 'העתקת קבצים' },
+    { cmd: 'xcopy', desc: 'העתקה מתקדמת של קבצים ותיקיות' },
+    { cmd: 'del', desc: 'מחיקת קבצים' },
+    { cmd: 'mkdir', desc: 'יצירת תיקייה' },
+    { cmd: 'rmdir', desc: 'מחיקת תיקייה' },
+    { cmd: 'ipconfig', desc: 'מידע על הגדרות רשת' },
+    { cmd: 'ping', desc: 'בדיקת חיבור לרשת' },
+    { cmd: 'tracert', desc: 'מעקב אחרי מסלול חבילות ברשת' },
+    { cmd: 'netstat', desc: 'הצגת חיבורים פתוחים לרשת' },
+    { cmd: 'tasklist', desc: 'רשימת תהליכים פעילים' },
+    { cmd: 'taskkill', desc: 'סגירת תהליך' },
+    { cmd: 'sfc', desc: 'סורק ומשחזר קבצי מערכת' },
+    { cmd: 'chkdsk', desc: 'בדיקת תקינות הדיסק' },
+    { cmd: 'shutdown', desc: 'כיבוי או הפעלה מחדש של המחשב' },
+    { cmd: 'systeminfo', desc: 'מידע מפורט על המערכת' },
+    { cmd: 'whoami', desc: 'מי המשתמש המחובר כרגע' },
+    { cmd: 'assoc', desc: 'ניהול סוגי קבצים' },
+    { cmd: 'gpupdate', desc: 'עדכון מדיניות קבוצתית' },
+    { cmd: 'net user', desc: 'ניהול משתמשים' },
+    { cmd: 'reg query', desc: 'חיפוש במפתחי הרגיסטרי' },
+
+    // הפקודות המקוריות שלך עם הסברים
+    { cmd: 'cmd', desc: 'שורת הפקודה (Command Prompt)' },
+    { cmd: 'powershell', desc: 'PowerShell' },
+    { cmd: 'msconfig', desc: 'תצורת מערכת (System Configuration)' },
+    { cmd: 'services.msc', desc: 'ניהול שירותים' },
+    { cmd: 'taskmgr', desc: 'מנהל המשימות' },
+    { cmd: 'control', desc: 'לוח הבקרה' },
+    { cmd: 'ncpa.cpl', desc: 'הגדרות רשת' },
+    { cmd: 'devmgmt.msc', desc: 'מנהל ההתקנים' },
+    { cmd: 'diskmgmt.msc', desc: 'ניהול דיסקים' },
+    { cmd: 'appwiz.cpl', desc: 'הסרת/הוספת תוכנות' },
+    { cmd: 'regedit', desc: 'עורך הרגיסטרי (⚠️ בזהירות!)' },
+    { cmd: 'gpedit.msc', desc: 'עורך מדיניות קבוצתית (בגרסאות Pro בלבד)' },
+    { cmd: 'secpol.msc', desc: 'הגדרות אבטחה מקומית' },
+    { cmd: 'compmgmt.msc', desc: 'ניהול המחשב' },
+    { cmd: 'eventvwr', desc: 'יומני מערכת' },
+    { cmd: 'resmon', desc: 'משאבי מערכת (Resource Monitor)' },
+    { cmd: 'perfmon', desc: 'ניטור ביצועים' },
+    { cmd: 'sysdm.cpl', desc: 'מאפייני מערכת' },
+    { cmd: 'syskey', desc: 'הגנת מערכת (לא תמיד פעיל בגרסאות חדשות)' },
+    { cmd: 'lusrmgr.msc', desc: 'ניהול משתמשים (בגרסת Pro)' },
+    { cmd: 'netplwiz', desc: 'ניהול חשבונות משתמש' },
+    { cmd: 'control userpasswords2', desc: 'תפריט משתמשים מתקדם' },
+    { cmd: 'explorer .', desc: 'סייר הקבצים בתיקייה הנוכחית' },
+    { cmd: 'shell:startup', desc: 'תוכניות שמתחילות עם עליית המחשב' },
+    { cmd: 'shell:common startup', desc: 'אתחול אוטומטי לכל המשתמשים' },
+    { cmd: 'shell:recent', desc: 'קבצים אחרונים' },
+    { cmd: 'shell:downloads', desc: 'תיקיית ההורדות' },
+    { cmd: 'shell:sendto', desc: 'תפריט "שלח אל"' },
+    { cmd: 'shell:desktop', desc: 'שולחן העבודה' },
+    { cmd: 'shell:personal', desc: 'תיקיית "המסמכים שלי"' },
+    { cmd: 'shell:my pictures', desc: 'תיקיית התמונות' },
+    { cmd: 'shell:my music', desc: 'תיקיית המוזיקה' },
+    { cmd: 'calc', desc: 'מחשבון' },
+    { cmd: 'notepad', desc: 'פנקס רשימות' },
+    { cmd: 'write', desc: 'WordPad' },
+    { cmd: 'mspaint', desc: 'צייר' },
+    { cmd: 'osk', desc: 'מקלדת על המסך' },
+    { cmd: 'dxdiag', desc: 'מידע על מערכת וגרפיקה' },
+    { cmd: 'magnify', desc: 'זכוכית מגדלת' },
+    { cmd: 'snippingtool', desc: 'כלי צילום מסך ישן' },
+    { cmd: 'snip', desc: 'כלי צילום מסך חדש' },
+    { cmd: 'msinfo32', desc: 'מידע מלא על המערכת' },
+    { cmd: 'charmap', desc: 'טבלת תווים' },
+    { cmd: 'certmgr.msc', desc: 'ניהול תעודות אבטחה' },
+    { cmd: 'credwiz', desc: 'ניהול סיסמאות ואישורים' },
+    { cmd: 'dcomcnfg', desc: 'שירותי COM ו-DCOM' },
+    { cmd: 'fsmgmt.msc', desc: 'תיקיות שיתוף' },
+    { cmd: 'iscsicpl', desc: 'ניהול iSCSI' },
+    { cmd: 'printmanagement.msc', desc: 'ניהול מדפסות (בגרסאות Pro)' },
+  ];
+
+  const cmdBody = document.getElementById('cmdBody');
+  const searchInput = document.getElementById('search');
+
+  function displayCommands(filter = '') {
+    const filterLower = filter.trim().toLowerCase();
+    cmdBody.innerHTML = '';
+
+    const filtered = commands.filter(c => 
+      c.cmd.toLowerCase().includes(filterLower) || c.desc.toLowerCase().includes(filterLower)
+    );
+
+    if(filtered.length === 0) {
+      cmdBody.innerHTML = '<tr><td colspan="2" style="text-align:center; padding:20px;">לא נמצאו פקודות מתאימות.</td></tr>';
+      return;
+    }
+
+    for (const cmd of filtered) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td class="cmd">${cmd.cmd}</td><td class="desc">${cmd.desc}</td>`;
+      cmdBody.appendChild(tr);
+    }
+  }
+
+  searchInput.addEventListener('input', e => {
+    displayCommands(e.target.value);
+  });
+
+  displayCommands(); // הצג הכל בהתחלה
+</script>
+<footer style="text-align: center; color: #888; padding: 20px; margin-top: 40px;">
+  כל הזכויות שמורות לשי פיתוח אתרים ©
+</footer>
+</body>
+</html>
