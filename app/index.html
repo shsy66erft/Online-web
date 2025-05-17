@@ -35,7 +35,7 @@
     const supabase = supabase.createClient(
       'https://shsy66erft.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoc3k2NmVyZnQuc3VwYWJhc2UuY28iLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc0NzQ5OTMyNSwiZXhwIjoyMDYzMDc1MzI1fQ.s9V8HcFfZJXs5ZBcVauFaZg42UJhDnTWecZ8j4vbQNc'
-    )
+    );
 
     async function signInWithGoogle() {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -43,12 +43,13 @@
         options: {
           redirectTo: 'https://www.shayweb.online/home.html'
         }
-      })
+      });
 
       if (error) {
-        alert("שגיאה בהתחברות: " + error.message)
+        alert("שגיאה בהתחברות: " + error.message);
       }
     }
   </script>
+
 </body>
 </html>
