@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>ניהול משתמשים</title>
+</head>
+<body>
+  <h1>רשימת משתמשים שנרשמו</h1>
+  <pre id="output">טוען...</pre>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://shsy66erft.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlZGVtbmdwbHZpbWRscGl2aXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTkzMjUsImV4cCI6MjA2MzA3NTMyNX0.s9V8HcFfZJXs5ZBcVauFaZg42UJhDnTWecZ8j4vbQNc'
+    );
+
+    async function loadUsers() {
+      const { data: profiles, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, avatar_url, created_at')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error(error);
+        document.getElementById('output').textContent = 'שגיאה: ' + error.message;
+      } else {
+        document.getElementById('output').textContent = JSON.stringify(profiles, null, 2);
+        console.table(profiles);
+      }
+    }
+
+    loadUsers();
+  </script>
+</body>
+</html>
