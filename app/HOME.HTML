@@ -93,6 +93,7 @@
   <header class="header">
     <h1>🆘 HelpMeNow</h1>
     <p>אתר עזרה מיידית למצבי חירום ונפילות יומיומיות</p>
+    <p id="welcome"></p>
   </header>
 
   <section class="grid">
@@ -102,19 +103,23 @@
     <a href="violence.html" class="card">🚨 אלימות או איום</a>
     <a href="money.html" class="card">💸 משבר כלכלי</a>
   </section>
-<script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-  const supabase = createClient('https://shsy66erft.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlZGVtbmdwbHZpbWRscGl2aXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTkzMjUsImV4cCI6MjA2MzA3NTMyNX0.s9V8HcFfZJXs5ZBcVauFaZg42UJhDnTWecZ8j4vbQNc')
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (!user) {
-    window.location.href = '/index.html' // מחזיר להתחברות אם לא מחובר
-  } else {
-    console.log('User is logged in:', user)
-    document.getElementById('welcome').textContent = `שלום, ${user.email}`
-  }
-</script>
+    const supabaseUrl = 'https://shsy66erft.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoc3k2NmVyZnQiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcxNTkzMTE5NSwiZXhwIjoyMDcwNTE3MTk1fQ.S3zMtF8KZtYoQpxnlVmpJAdD-2XZ_ErFbpO-mXvPe8o'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const { data: { user }, error } = await supabase.auth.getUser()
+    if (!user) {
+      window.location.href = '/index.html' // מחזיר להתחברות אם לא מחובר
+    } else {
+      console.log('User is logged in:', user)
+      document.getElementById('welcome').textContent = `שלום, ${user.email}`
+    }
+  </script>
+
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4558621528788741"
     crossorigin="anonymous"></script>
 
