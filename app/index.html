@@ -4,10 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>התחברות עם גוגל</title>
-  <!-- טעינת ספריית GSI של גוגל -->
+
+  <!-- GSI של גוגל -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <!-- הגדרת ה-Client ID -->
   <meta name="google-signin-client_id" content="446695942872-kjbcmh8hisfr78lrkg8dahvo834qhsb5.apps.googleusercontent.com">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -40,7 +41,7 @@
 
   <br />
 
-  <!-- כפתור התחברות עם גוגל לפי GSI -->
+  <!-- כפתור התחברות עם גוגל -->
   <div id="g_id_onload"
        data-client_id="446695942872-kjbcmh8hisfr78lrkg8dahvo834qhsb5.apps.googleusercontent.com"
        data-context="signin"
@@ -58,49 +59,60 @@
        data-logo_alignment="left">
   </div>
 
-  <script>
-    // פונקציה לטיפול בתשובת ההתחברות של גוגל
-    function handleCredentialResponse(response) {
-      // הפונקציה מקבלת את הטוקן ב-response.credential
-      const credential = response.credential;
-      // נשתמש בפונקציה parseJwt כדי לפענח את הטוקן ולהוציא ממנו נתונים
-      const payload = parseJwt(credential);
-      const name = payload.name;
-      const email = payload.email;
-      
+  <!-- סקריפט -->
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-      
-      // העברת המשתמש לדף הדשבורד
-      window.location.href = "HOME.html";
+    const supabaseUrl = 'https://shsy66erft.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoc3k2NmVyZnQuc3VwYWJhc2UuY28iLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc0NzQ5OTMyNSwiZXhwIjoyMDYzMDc1MzI1fQ.s9V8HcFfZJXs5ZBcVauFaZg42UJhDnTWecZ8j4vbQNc'
+    const supabase = createClient(supabaseUrl, supabaseKey)
 
-
-    // התחברות באמצעות טופס רגיל
-    document.getElementById("login-form").onsubmit = function(e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      // עבור דוגמה, נשמור את האימייל וגם נבנה שם משתמש מפושט
-      localStorage.setItem("email", email);
-      localStorage.setItem("username", email.split("@")[0]);
-      window.location.href = "HOME.html";
-    };
-      
-<script type="module">
-  import { createClient } from 'https://esm.sh/@supabase/supabase-js'
-
-  const supabaseUrl = 'https://shsy66erft.supabase.co'
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlZGVtbmdwbHZpbWRscGl2aXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTkzMjUsImV4cCI6MjA2MzA3NTMyNX0.s9V8HcFfZJXs5ZBcVauFaZg42UJhDnTWecZ8j4vbQNc'
-  const supabase = createClient(supabaseUrl, supabaseKey)
-
-  // התחברות עם גוגל
-  document.getElementById('google-signin-btn').addEventListener('click', async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: 'https://shayweb.online/home.html' // הפנייה אחרי התחברות
+    // פענוח טוקן של גוגל
+    function parseJwt(token) {
+      try {
+        return JSON.parse(atob(token.split('.')[1]))
+      } catch (e) {
+        console.error('שגיאה בפענוח טוקן:', e)
+        return null
       }
-    })
-    if (error) console.error('Google Sign-In Error:', error.message)
-  })
-</script>
+    }
+
+    // התחברות דרך גוגל
+    window.handleCredentialResponse = async function(response) {
+      const payload = parseJwt(response.credential)
+      if (!payload) return alert('שגיאה בזיהוי המשתמש')
+
+      const email = payload.email
+      const name = payload.name
+
+      // שמירה ל־Supabase
+      const { error } = await supabase
+        .from('logins')
+        .insert([{ email, name, login_time: new Date().toISOString() }])
+
+      if (error) {
+        console.error('שגיאה בשמירה ל-Supabase:', error.message)
+        return alert('שגיאה בכניסה. נסה שוב.')
+      }
+
+      // שמירה בלוקאל סטורג' ומעבר לדף הבית
+      localStorage.setItem("email", email)
+      localStorage.setItem("username", email.split("@")[0])
+      window.location.href = "HOME.html"
+    }
+
+    // התחברות עם טופס רגיל
+    document.getElementById("login-form").onsubmit = async function(e) {
+      e.preventDefault()
+      const email = document.getElementById("email").value
+      localStorage.setItem("email", email)
+      localStorage.setItem("username", email.split("@")[0])
+
+      // אופציונלי: גם כאן אפשר לשמור ב־Supabase אם רוצים
+      await supabase.from('logins').insert([{ email, name: email.split("@")[0], login_time: new Date().toISOString() }])
+
+      window.location.href = "HOME.html"
+    }
+  </script>
 </body>
 </html>
