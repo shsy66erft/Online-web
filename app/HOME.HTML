@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -93,7 +93,7 @@
   <header class="header">
     <h1>🆘 HelpMeNow</h1>
     <p>אתר עזרה מיידית למצבי חירום ונפילות יומיומיות</p>
-    <p id="welcome"></p>
+    <p id="welcome">טוען...</p>
   </header>
 
   <section class="grid">
@@ -111,13 +111,23 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoc3k2NmVyZnQiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcxNTkzMTE5NSwiZXhwIjoyMDcwNTE3MTk1fQ.S3zMtF8KZtYoQpxnlVmpJAdD-2XZ_ErFbpO-mXvPe8o'
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    const { data: { user }, error } = await supabase.auth.getUser()
-    if (!user) {
-      window.location.href = '/index.html' // מחזיר להתחברות אם לא מחובר
-    } else {
-      console.log('User is logged in:', user)
-      document.getElementById('welcome').textContent = `שלום, ${user.email}`
+    async function checkUser() {
+      const { data: { user }, error } = await supabase.auth.getUser()
+      if (error) {
+        console.error('Error getting user:', error)
+        document.getElementById('welcome').textContent = 'אירעה שגיאה, אנא נסה להתחבר מחדש.'
+        return;
+      }
+      if (!user) {
+        // לא מחובר, מפנה לדף התחברות
+        window.location.href = '/index.html'
+      } else {
+        // מחובר - מציג הודעת ברוך הבא עם האימייל
+        document.getElementById('welcome').textContent = `שלום, ${user.email}`
+      }
     }
+
+    checkUser()
   </script>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4558621528788741"
