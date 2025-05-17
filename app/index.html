@@ -103,6 +103,33 @@
     if (error) console.error(error);
     else console.log("supabase user:", data.user);
   }
+  -- הפעל ב‑SQL Editor
+create table public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  full_name text,
+  avatar_url text,
+  created_at timestamp with time zone default now()
+);
+  create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles(id, full_name, avatar_url)
+  values (new.id, new.raw_user_meta_data->>'name', new.raw_user_meta_data->>'picture');
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute procedure public.handle_new_user();
+  const { data: profiles, error } = await supabase
+  .from('profiles')
+  .select('id, full_name, avatar_url, created_at')
+  .order('created_at', { ascending: false });
+
+if (error) console.error(error);
+else console.table(profiles);
 </script>
+  
 </body>
 </html>
