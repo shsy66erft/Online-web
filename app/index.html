@@ -93,24 +93,7 @@
 
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // פעולה שמתבצעת אחרי שטופל ה‑JWT של Google
-  async function onGoogleLogin(jwt) {
-    // מוסרים את ה‑JWT ל‑Supabase כדי שיאמת ויצור את המשתמש
-    const { data, error } = await supabase.auth.signInWithIdToken({
-      provider: 'google',
-      token: jwt,
-    });
-    if (error) console.error(error);
-    else console.log("supabase user:", data.user);
-  }
-  -- הפעל ב‑SQL Editor
-create table public.profiles (
-  id uuid primary key references auth.users(id) on delete cascade,
-  full_name text,
-  avatar_url text,
-  created_at timestamp with time zone default now()
-);
-  create or replace function public.handle_new_user()
+
 returns trigger as $$
 begin
   insert into public.profiles(id, full_name, avatar_url)
