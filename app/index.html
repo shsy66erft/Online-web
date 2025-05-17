@@ -1,108 +1,101 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 <head>
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ffffff">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="שם האפליקציה שלך">
-<link rel="apple-touch-icon" href="icon.png">
-  <meta name="google-adsense-account" content="ca-pub-4558621528788741">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>עזרה - מה עליי לעשות</title>
-<style>body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  color: white;
-  text-align: center;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.header {
-  padding: 3rem 1rem 2rem;
-  background: rgba(0,0,0,0.2);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 3rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-}
-
-.header p {
-  margin-top: 0.5rem;
-  font-size: 1.3rem;
-  font-weight: 500;
-  color: #d1d1d1;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 3rem 2rem;
-  flex-grow: 1;
-}
-
-.card {
-  background: rgba(255,255,255,0.15);
-  border-radius: 20px;
-  padding: 2.5rem 1rem;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: white;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  user-select: none;
-  text-decoration: none;
-  backdrop-filter: blur(10px);
-}
-
-.card:hover {
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-  transform: translateY(-8px) scale(1.05);
-  color: #111;
-}
-
-footer {
-  background: rgba(0,0,0,0.2);
-  padding: 1rem 1rem;
-  font-size: 0.9rem;
-  color: #eee;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-}
-</style>
+  <title>התחברות עם גוגל</title>
+  <!-- טעינת ספריית GSI של גוגל -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- הגדרת ה-Client ID -->
+  <meta name="google-signin-client_id" content="27161244762-eccbdthje6jom9uoa0sb00d7t7k1tepj.apps.googleusercontent.com">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      text-align: center;
+      padding: 50px;
+      background-color: #f4f4f4;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 90%;
+      max-width: 300px;
+    }
+    .g_id_signin {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-  <header class="header">
-    <h1>🆘 HelpMeNow</h1>
-    <p>אתר עזרה מיידית למצבי חירום ונפילות יומיומיות</p>
-  </header>
 
-  <section class="grid">
-    <a href="mental.html" class="card">🧠 מצוקה נפשית</a>
-    <a href="health.html" class="card">🏥 בעיה רפואית</a>
-    <a href="tech.html" class="card">💻 תקלה טכנית</a>
-    <a href="violence.html" class="card">🚨 אלימות או איום</a>
-    <a href="money.html" class="card">💸 משבר כלכלי</a>
-  </section>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4558621528788741"
-     crossorigin="anonymous"></script>
-  <footer>
-    <p>האתר נועד לספק מידע כללי ואינו מחליף ייעוץ מקצועי. אם מדובר במצב חירום – פנה לגורמים מוסמכים.</p>
-  </footer>
+  <h2>התחבר לאתר</h2>
+
+  <!-- טופס התחברות רגיל -->
+  <form id="login-form">
+    <input type="email" id="email" placeholder="אימייל" required />
+    <input type="password" id="password" placeholder="סיסמה" required />
+    <button type="submit">התחבר</button>
+  </form>
+
+  <br />
+
+  <!-- כפתור התחברות עם גוגל לפי GSI -->
+  <div id="g_id_onload"
+       data-client_id="27161244762-eccbdthje6jom9uoa0sb00d7t7k1tepj.apps.googleusercontent.com"
+       data-context="signin"
+       data-ux_mode="popup"
+       data-callback="handleCredentialResponse"
+       data-auto_prompt="false">
+  </div>
+
+  <div class="g_id_signin"
+       data-type="standard"
+       data-shape="pill"
+       data-theme="outline"
+       data-text="signin_with"
+       data-size="large"
+       data-logo_alignment="left">
+  </div>
+
+  <script>
+    // פונקציה לטיפול בתשובת ההתחברות של גוגל
+    function handleCredentialResponse(response) {
+      // הפונקציה מקבלת את הטוקן ב-response.credential
+      const credential = response.credential;
+      // נשתמש בפונקציה parseJwt כדי לפענח את הטוקן ולהוציא ממנו נתונים
+      const payload = parseJwt(credential);
+      const name = payload.name;
+      const email = payload.email;
+      
+      // שמירת הנתונים ב-localStorage לצורך שימוש בדשבורד
+      localStorage.setItem("username", name);
+      localStorage.setItem("email", email);
+      
+      // העברת המשתמש לדף הדשבורד
+      window.location.href = "HOME.html";
+    }
+
+    // פונקציה לפענוח JWT (המבוססת על Base64)
+    function parseJwt(token) {
+      var base64Url = token.split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    }
+
+    // התחברות באמצעות טופס רגיל
+    document.getElementById("login-form").onsubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      // עבור דוגמה, נשמור את האימייל וגם נבנה שם משתמש מפושט
+      localStorage.setItem("email", email);
+      localStorage.setItem("username", email.split("@")[0]);
+      window.location.href = "HOME.html";
+    };
+  </script>
+
 </body>
 </html>
