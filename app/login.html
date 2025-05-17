@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>התחברות עם גוגל</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      direction: rtl;
+      padding: 50px;
+      background-color: #f9f9f9;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ברוך הבא</h1>
+  <p>התחבר עם חשבון Google שלך</p>
+
+  <button id="google-login-btn">התחבר עם גוגל</button>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+    const supabaseUrl = 'https://shsy66erft.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoc3k2NmVyZnQiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcxNTkzMTE5NSwiZXhwIjoyMDcwNTE3MTk1fQ.S3zMtF8KZtYoQpxnlVmpJAdD-2XZ_ErFbpO-mXvPe8o'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    document.getElementById('google-login-btn').addEventListener('click', async () => {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/home.html',
+          flow: 'popup'  // כאן נעשה שימוש ב-popup במקום redirect
+        }
+      })
+
+      if (error) {
+        alert("שגיאה בהתחברות: " + error.message)
+        console.error("Error during Google sign-in:", error)
+      } else {
+        alert("התחברת בהצלחה!")
+        console.log('User data:', data)
+        window.location.href = '/home.html'
+      }
+    })
+  </script>
+
+</body>
+</html>
