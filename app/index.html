@@ -84,6 +84,23 @@
       window.location.href = "HOME.html";
     };
       
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
+  const supabaseUrl = 'https://shsy66erft.supabase.co'
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlZGVtbmdwbHZpbWRscGl2aXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTkzMjUsImV4cCI6MjA2MzA3NTMyNX0.s9V8HcFfZJXs5ZBcVauFaZg42UJhDnTWecZ8j4vbQNc'
+  const supabase = createClient(supabaseUrl, supabaseKey)
+
+  // התחברות עם גוגל
+  document.getElementById('google-signin-btn').addEventListener('click', async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'https://shayweb.online/home.html' // הפנייה אחרי התחברות
+      }
+    })
+    if (error) console.error('Google Sign-In Error:', error.message)
+  })
+</script>
 </body>
 </html>
