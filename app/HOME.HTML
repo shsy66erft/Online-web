@@ -79,6 +79,22 @@
       color: #111;
     }
 
+    #logout-btn {
+      margin: 1rem auto 2rem;
+      padding: 10px 20px;
+      background-color: #d9534f;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #logout-btn:hover {
+      background-color: #c9302c;
+    }
+
     footer {
       background: rgba(0,0,0,0.2);
       padding: 1rem 1rem;
@@ -104,6 +120,8 @@
     <a href="money.html" class="card">💸 משבר כלכלי</a>
   </section>
 
+  <button id="logout-btn">התנתק</button>
+
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
@@ -116,18 +134,23 @@
       if (error) {
         console.error('Error getting user:', error)
         document.getElementById('welcome').textContent = 'אירעה שגיאה, אנא נסה להתחבר מחדש.'
-        return;
+        return
       }
       if (!user) {
-        // לא מחובר, מפנה לדף התחברות
         window.location.href = '/index.html'
       } else {
-        // מחובר - מציג הודעת ברוך הבא עם האימייל
-        document.getElementById('welcome').textContent = `שלום, ${user.email}`
+        const fullName = user.user_metadata.full_name || user.email
+        const firstName = fullName.split(' ')[0]
+        document.getElementById('welcome').textContent = `שלום, ${firstName}`
       }
     }
 
     checkUser()
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await supabase.auth.signOut()
+      window.location.href = '/index.html'
+    })
   </script>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4558621528788741"
