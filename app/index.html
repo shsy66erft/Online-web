@@ -33,15 +33,15 @@
   <script type="module">
     import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-    const supabaseUrl = 'https://shsy66erft.supabase.co'
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoc3k2NmVyZnQiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcxNTkzMTE5NSwiZXhwIjoyMDcwNTE3MTk1fQ.S3zMtF8KZtYoQpxnlVmpJAdD-2XZ_ErFbpO-mXvPe8o'
+    const supabaseUrl = 'https://ledemngplvimdlpivirl.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlZGVtbmdwbHZpbWRscGl2aXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc0OTkzMjUsImV4cCI6MjA2MzA3NTMyNX0.s9V8HcFfZJXs5ZBcVauFaZg42UJhDnTWecZ8j4vbQNc'
     const supabase = createClient(supabaseUrl, supabaseKey)
 
     document.getElementById('google-login-btn').addEventListener('click', async () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin + '/home.html'  // מפנה לדף הבית אחרי התחברות
+          redirectTo: 'https://shayweb.online/home.html'
         }
       })
 
