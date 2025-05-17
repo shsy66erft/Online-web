@@ -28,27 +28,27 @@
   <h1>ברוך הבא</h1>
   <p>התחבר עם חשבון Google שלך</p>
 
-  <button onclick="signInWithGoogle()">התחבר עם גוגל</button>
+  <button id="google-login-btn">התחבר עם גוגל</button>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
-  <script>
-    const supabase = supabase.createClient(
-      'https://shsy66erft.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoc3k2NmVyZnQuc3VwYWJhc2UuY28iLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc0NzQ5OTMyNSwiZXhwIjoyMDYzMDc1MzI1fQ.s9V8HcFfZJXs5ZBcVauFaZg42UJhDnTWecZ8j4vbQNc'
-    );
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-    async function signInWithGoogle() {
+    const supabaseUrl = 'https://shsy66erft.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoc3k2NmVyZnQiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTcxNTkzMTE5NSwiZXhwIjoyMDcwNTE3MTk1fQ.S3zMtF8KZtYoQpxnlVmpJAdD-2XZ_ErFbpO-mXvPe8o'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    document.getElementById('google-login-btn').addEventListener('click', async () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: 'https://www.shayweb.online/home.html'
+          redirectTo: window.location.origin + '/home.html'  // מפנה לדף הבית אחרי התחברות
         }
-      });
+      })
 
       if (error) {
-        alert("שגיאה בהתחברות: " + error.message);
+        alert("שגיאה בהתחברות: " + error.message)
       }
-    }
+    })
   </script>
 
 </body>
